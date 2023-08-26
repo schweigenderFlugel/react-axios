@@ -4,17 +4,7 @@ export const AuthContext = React.createContext();
 
 export function AuthProvider({ children }) {
     const [ login, setLogin ] = React.useState(null);
-    const [ loading, setLoading ] = React.useState(true)
-
-    /*
-    React.useEffect(() => {
-        setLoading(true)
-        fetch('https://schweigender.onrender.com/login')
-        .then((response) => response.json())
-        .then((data) => setLogin(data))
-        .finally(() => setLoading(false))
-    }, [])
-    */
+    const [ loading, setLoading ] = React.useState(true);
 
     return (
         <AuthContext.Provider value={{

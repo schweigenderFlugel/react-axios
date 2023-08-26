@@ -6,11 +6,13 @@ import './App.css';
 import { AuthProvider } from "./Context";
 import Footer from "./Components/Footer";
 import Login from "./Components/Login";
+import MyOrders from "./Pages/MyOrders";
 
 const AppRoutes = () => {
   let routes = useRoutes([
     { path: '/articles', element: <ArticleCard/> },
-    { path: '/login', element: <Login/> }
+    { path: '/login', element: <Login/> },
+    { path: '/my-orders', element: <MyOrders/> }
   ])
   return routes
 }
