@@ -6,10 +6,12 @@ import './App.css';
 import Footer from "./Components/Footer";
 import Login from "./Components/Login";
 import MyOrders from "./Pages/MyOrders";
+import ArticlesDetails from "./Components/ArticleDetails";
 
 const AppRoutes = () => {
   let routes = useRoutes([
     { path: '/articles', element: <ArticleCard/> },
+    { path: 'articles/:id', element: <ArticlesDetails /> },
     { path: '/login', element: <Login/> },
     { path: '/my-orders', element: <MyOrders/> }
   ])

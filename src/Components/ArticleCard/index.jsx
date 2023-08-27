@@ -2,12 +2,13 @@
 import Layout from "../../Components/Layout";
 import React from "react";
 import axios from "../../../api/axios";
+import { NavLink } from "react-router-dom";
 
 const ArticleCards = () => {
   const [loading, setLoading] = React.useState(true);
   const [error, setError] = React.useState(false);
   const [products, setProducts] = React.useState([]);
-  const [value, setValue] = React.useState("");
+  const [ data, setData ] = React.useState("");
 
   const PRODUCTS_URL = "/api/v1/product";
 
@@ -26,6 +27,11 @@ const ArticleCards = () => {
     fetchProduct();
   });
 
+  const handleClick = (data) => {
+    console.log(data);
+    setData(data);
+  }
+
   return (
     <Layout>
       {loading ? (
@@ -33,7 +39,8 @@ const ArticleCards = () => {
       ) : (
         <ul>
           {products.map((item) => (
-            <li key={item._id} value={item._id} style={{cursor:"pointer"}} >
+            <li key={item._id} style={{cursor:"pointer"}} onClick={() => handleClick(item._id)} >
+              <NavLink to={`${item._id}`}>
               <div className="flex justify-between items-center mb-4 border border-black rounded-lg p-4 w-96 lg:w-80">
                 <div className="flex justify-between w-full">
                   <p className="flex flex-col">
@@ -46,6 +53,7 @@ const ArticleCards = () => {
                   </p>
                 </div>
               </div>
+              </NavLink>
             </li>
           ))}
         </ul>
