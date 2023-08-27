@@ -1,25 +1,25 @@
 import React from "react";
-import { AuthContext } from "../../Context";
 import Layout from "../Layout";
 import axios from "../../../api/axios";
 
-const LOGIN_URL = "/api/v1/login";
-
 const Login = () => {
-  const { setLogin } = React.useContext(AuthContext);
-  const userRef = React.useRef();
-  const errRef = React.useRef();
+  const [login, setLogin] = React.useState(null);
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [error, setError] = React.useState("");
   const [success, setSuccess] = React.useState(false);
+
+  const userRef = React.useRef();
+  const errRef = React.useRef();
+
+  const LOGIN_URL = "/api/v1/login";
 
   React.useEffect(() => {
     userRef.current.focus();
   }, []);
 
   React.useEffect(() => {
-    setError("");
+    setError(null);
   }, [email, password]);
 
   const handleSubmit = async (e) => {
@@ -36,8 +36,6 @@ const Login = () => {
           withCredentials: false,
         }
       );
-      console.log(JSON.stringify(response?.data.role));
-      console.log(JSON.stringify(response?.data.accessToken));
       const accessToken = response?.data?.accessToken;
       const role = response?.data?.role;
       setLogin({ email, password, role, accessToken });
@@ -46,13 +44,45 @@ const Login = () => {
       setSuccess(true);
     } catch (error) {
       if (!error?.response) {
-        setError("No Server Response");
+        setError(
+          <div
+            ref={errRef}
+            className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative font-bold mb-6"
+            role="alert"
+          >
+            No pudo conectarse al servidor
+          </div>
+        );
       } else if (error.response?.status === 400) {
-        setError("Missing username or password");
+        setError(
+          <div
+            ref={errRef}
+            className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative font-bold mb-6"
+            role="alert"
+          >
+            Falta correo y contraseña
+          </div>
+        );
       } else if (error.response?.status === 401) {
-        setError("Unauthorized");
+        setError(
+          <div
+            ref={errRef}
+            className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative font-bold mb-6"
+            role="alert"
+          >
+            Datos inválidos
+          </div>
+        );
       } else {
-        setError("Login failed");
+        setError(
+          <div
+            ref={errRef}
+            className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-6"
+            role="alert"
+          >
+            Falla al ingresar
+          </div>
+        );
       }
       errRef.current.focus();
     }
@@ -61,11 +91,9 @@ const Login = () => {
   return (
     <Layout>
       {success ? (
-        <section>
-          <p ref={errRef} className={errRef ? "error" : "offscreen"}>
-            {error}
-          </p>
-        </section>
+        <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative font-bold mb-6" role="alert">
+        Ingresó correctamente
+      </div>
       ) : (
       <div className=" grid justify-items-center mt-6 lg:mt-16 mb-32 bg-gray-300 border-double border-4 border-gray-500 px-12 py-12">
         <h1 className="font-bold text-2xl mb-6">Ingrese sus datos</h1>
@@ -90,6 +118,9 @@ const Login = () => {
             value={password}
           />
           </div>
+          <section>
+            {error}
+          </section>
           <button className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">Ingresar</button>
         </form>
       </div>

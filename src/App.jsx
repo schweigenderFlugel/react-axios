@@ -3,7 +3,6 @@ import { useRoutes, BrowserRouter } from "react-router-dom";
 import Navbar from './Components/Navbar';
 import ArticleCard from './Components/ArticleCard';
 import './App.css';
-import { AuthProvider } from "./Context";
 import Footer from "./Components/Footer";
 import Login from "./Components/Login";
 import MyOrders from "./Pages/MyOrders";
@@ -20,11 +19,9 @@ const AppRoutes = () => {
 const App = () => {
   return (
     <BrowserRouter>
-      <AuthProvider>
         <Navbar/>
         <AppRoutes/>
         <Footer/>
-      </AuthProvider>
     </BrowserRouter>
   )
 }
