@@ -1,6 +1,7 @@
 import React from "react";
-import Layout from "../Layout";
+import Layout from "../../Components/Layout";
 import axios from "../../../api/axios";
+import { NavLink } from "react-router-dom";
 
 const Login = () => {
   const [login, setLogin] = React.useState(null);
@@ -118,6 +119,13 @@ const Login = () => {
             value={password}
           />
           </div>
+          <section>
+            <p>¿Todavía no estás registrado? <NavLink 
+              to={'/sign-up'} 
+              className="text-blue-800 hover:underline">
+                Regístrese
+              </NavLink></p>
+          </section>
           <section>
             {error}
           </section>
