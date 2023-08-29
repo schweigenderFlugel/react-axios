@@ -1,14 +1,20 @@
 import React from "react";
 import Layout from "../../Components/Layout";
 import axios from "../../../api/axios";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate, useLocation } from "react-router-dom";
+import WarningMessage from "../../Components/WarningMessages";
+import useLogin from "../../Hooks/useLogin";
 
 const Login = () => {
-  const [login, setLogin] = React.useState(null);
+  const { setLogin } = useLogin();
+
+  const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from.pathname || "/";
+
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [error, setError] = React.useState("");
-  const [success, setSuccess] = React.useState(false);
 
   const userRef = React.useRef();
   const errRef = React.useRef();
@@ -42,48 +48,20 @@ const Login = () => {
       setLogin({ email, password, role, accessToken });
       setEmail("");
       setPassword("");
-      setSuccess(true);
+      navigate(from, { replace: true });
     } catch (error) {
       if (!error?.response) {
         setError(
-          <div
-            ref={errRef}
-            className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative font-bold mb-6"
-            role="alert"
-          >
-            No pudo conectarse al servidor
-          </div>
+          <WarningMessage>No pudo conectarse al servidor</WarningMessage>
         );
       } else if (error.response?.status === 400) {
         setError(
-          <div
-            ref={errRef}
-            className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative font-bold mb-6"
-            role="alert"
-          >
-            Falta correo y contraseña
-          </div>
+          <WarningMessage>Debe ingresar su email y contraseña</WarningMessage>
         );
       } else if (error.response?.status === 401) {
-        setError(
-          <div
-            ref={errRef}
-            className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative font-bold mb-6"
-            role="alert"
-          >
-            Datos inválidos
-          </div>
-        );
+        setError(<WarningMessage>Datos inválidos</WarningMessage>);
       } else {
-        setError(
-          <div
-            ref={errRef}
-            className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-6"
-            role="alert"
-          >
-            Falla al ingresar
-          </div>
-        );
+        setError(<WarningMessage>Error desconocido!</WarningMessage>);
       }
       errRef.current.focus();
     }
@@ -91,49 +69,52 @@ const Login = () => {
 
   return (
     <Layout>
-      {success ? (
-        <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative font-bold mb-6" role="alert">
-        Ingresó correctamente
-      </div>
-      ) : (
-      <div className=" grid justify-items-center mt-6 lg:mt-16 mb-32 bg-gray-300 border-double border-4 border-gray-500 px-12 py-12">
-        <h1 className="font-bold text-2xl mb-6">Ingrese sus datos</h1>
-        <form onSubmit={handleSubmit}>
-          <div className="mb-6">
-          <label htmlFor="email" className="mr-10">Correo: </label>
-          <input
-            type="text"
-            id="email"
-            ref={userRef}
-            autoComplete="off"
-            onChange={(e) => setEmail(e.target.value)}
-            value={email}
-          />
-          </div>
-          <div className="mb-6">
-          <label htmlFor="password" className="mr-3">Contraseña:</label>
-          <input
-            type="password"
-            id="password"
-            onChange={(e) => setPassword(e.target.value)}
-            value={password}
-          />
-          </div>
-          <section>
-            <p>¿Todavía no estás registrado? <NavLink 
-              to={'/sign-up'} 
-              className="text-blue-800 hover:underline">
-                Regístrese
-              </NavLink></p>
-          </section>
-          <section>
-            {error}
-          </section>
-          <button className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">Ingresar</button>
-        </form>
-      </div>
-        
-      )}
+      <>
+        <section ref={errRef}>{error}</section>
+        <div className="grid justify-items-center mt-6 lg:mt-16 mb-32 bg-gray-300 border-double border-4 border-gray-500 px-12 py-12">
+          <h1 className="font-bold text-2xl mb-6">Ingrese sus datos</h1>
+          <form onSubmit={handleSubmit}>
+            <div className="mb-6">
+              <label htmlFor="email" className="mr-10">
+                Correo:{" "}
+              </label>
+              <input
+                type="text"
+                id="email"
+                ref={userRef}
+                autoComplete="off"
+                onChange={(e) => setEmail(e.target.value)}
+                value={email}
+              />
+            </div>
+            <div className="mb-6">
+              <label htmlFor="password" className="mr-3">
+                Contraseña:
+              </label>
+              <input
+                type="password"
+                id="password"
+                onChange={(e) => setPassword(e.target.value)}
+                value={password}
+              />
+            </div>
+            <section className="mb-6">
+              <p>
+                ¿Todavía no estás registrado?{" "}
+                <NavLink
+                  to={"/sign-up"}
+                  className="text-blue-800 hover:underline"
+                >
+                  Regístrese
+                </NavLink>
+              </p>
+            </section>
+            <button className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
+              Ingresar
+            </button>
+          </form>
+        </div>
+      </>
     </Layout>
   );
 };

@@ -11,6 +11,12 @@ const SignUp = () => {
   const [error, setError] = React.useState("");
   const [success, setSuccess] = React.useState(false);
 
+  const errRef = React.useRef();
+
+  React.useEffect(() => {
+    setError(null)
+  }, [ email, username, password ])
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -25,18 +31,27 @@ const SignUp = () => {
           withCredentials: false,
         }
       );
+      setUsername("");
+      setEmail("");
+      setPassword("");
+      setSuccess(true);
     } catch (error) {
       if (!error?.response) {
-        setError("No se pudo conectar al servidor");
-      } else if (!error?.response.status === 409) {
+        setError("No pudo conectarse al servidor");
+      } else if (error?.response.status === 400) {
+        setError("No ha ingresado ningún dato");
+      } else if (error?.response.status === 409) {
         setError("Ya existe un usuario con este nombre y/o email");
       }
+      errRef.current.focus();
     }
   };
 
   return (
     <Layout>
-      <section>{error}</section>
+      {success ? (
+        <div>Registro exitoso</div>
+      ): (
       <div className="grid justify-items-center mt-6 lg:mt-16 mb-32 bg-gray-300 border-double border-4 border-gray-500 px-12 py-12">
         <form onSubmit={handleSubmit}>
           <label>Correo: </label>
@@ -61,7 +76,10 @@ const SignUp = () => {
             Registrarse
           </button>
         </form>
+        <section ref={errRef}>{error}</section>
       </div>
+      )}
+      
     </Layout>
   );
 };
