@@ -71,16 +71,18 @@ const Login = () => {
     <Layout>
       <>
         <section ref={errRef}>{error}</section>
-        <div className="grid justify-items-center mt-6 lg:mt-16 mb-32 bg-gray-300 border-double border-4 border-gray-500 px-12 py-12">
+        <div className="grid justify-items-center mt-3 lg:mt-16 mb-32 lg:bg-gray-300 lg:border-double lg:border-4 lg:border-gray-500 px-6 py-6 lg:px-12 lg:py-12">
           <h1 className="font-bold text-2xl mb-6">Ingrese sus datos</h1>
           <form onSubmit={handleSubmit}>
             <div className="mb-6">
-              <label htmlFor="email" className="mr-10">
+              <label htmlFor="email" className="hidden lg:inline lg:mr-10">
                 Correo:{" "}
               </label>
               <input
+                className="lg:w-48 w-72 h-12 lg:h-6 rounded-xl lg:rounded-md bg-gray-200 lg:bg-white placeholder-gray-500 lg:placeholder-white"
                 type="text"
                 id="email"
+                placeholder="Correo"
                 ref={userRef}
                 autoComplete="off"
                 onChange={(e) => setEmail(e.target.value)}
@@ -88,12 +90,14 @@ const Login = () => {
               />
             </div>
             <div className="mb-6">
-              <label htmlFor="password" className="mr-3">
+              <label htmlFor="password" className="hidden lg:inline lg:mr-3">
                 Contraseña:
               </label>
               <input
+                className="w-72 lg:w-48 h-12 lg:h-6 rounded-xl lg:rounded-md bg-gray-200 lg:bg-white placeholder-gray-500 lg:placeholder-white"
                 type="password"
                 id="password"
+                placeholder="Contraseña"
                 onChange={(e) => setPassword(e.target.value)}
                 value={password}
               />
@@ -109,9 +113,11 @@ const Login = () => {
                 </NavLink>
               </p>
             </section>
-            <button className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
-              Ingresar
-            </button>
+            <div className="text-center"> 
+              <button className="bg-green-500 hover:bg-green-700 shadow-lg shadow-green-500/50 text-white font-bold py-2 px-4 rounded">
+                Ingresar
+              </button>
+            </div>
           </form>
         </div>
       </>

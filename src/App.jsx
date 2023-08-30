@@ -9,6 +9,7 @@ import MyOrders from "./Pages/MyOrders";
 import ArticlesDetails from "./Pages/ArticleDetails";
 import SignUp from "./Pages/SignUp";
 import RequireLogin from "./Components/LoginRequired";
+import Modal from "./Components/ArticleSearchModal";
 
 const App = () => {
   return (

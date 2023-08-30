@@ -29,7 +29,7 @@ const ArticleSearch = () => {
       <label>
         Enter the article name:
         <input
-          className="w-80 h-6 px-2"
+          className="w-80 h-6 px-2 rounded"
           type="text"
           placeholder="Enter the title of the article"
           value={search}

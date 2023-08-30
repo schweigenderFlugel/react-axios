@@ -7,6 +7,7 @@ import SideMenu from "../SideMenu";
 const Navbar = () => {
   const [ toggleSearchBar, setToogleSearchBar ] = React.useState(false);
   const [ openSideMenu, setOpenSideMenu ] = React.useState(false);
+  const [ openModal, setOpenModal ] = React.useState(false);
   return (
     <>
       <div className="bg-black flex justify-between items-center fixed z-10 top-0 w-full py-4 px-5 lg:py-2 lg:px-5 text-sm font-light">
@@ -32,7 +33,7 @@ const Navbar = () => {
         </ul>
       </div>
       {toggleSearchBar && (
-        <div className="bg-gray-500 flex justify-between items-center fixed z-10 top-12 w-full py-2 px-5 text-sm font-light">
+        <div className=" hidden bg-gray-500 lg:flex justify-between items-center fixed z-10 top-12 w-full py-2 px-5 text-sm font-light">
           <ArticleSearch></ArticleSearch>
         </div>
       )}
